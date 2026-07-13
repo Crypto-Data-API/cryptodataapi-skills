@@ -76,5 +76,6 @@ to most endpoints for clean LLM context. Poll hourly, not per-tick.
 - Docs: https://cryptodataapi.com/api/docs · OpenAPI: https://cryptodataapi.com/api
 - Agent quickstart: https://cryptodataapi.com/ai-agents
 - **MCP alternative:** if the `cryptodataapi` MCP tools are loaded, prefer them (they call
-  these same endpoints with your key). Remote install:
-  `claude mcp add --transport http cryptodataapi https://cryptodataapi.com/mcp --header "X-API-Key: cdk_live_YOUR_KEY"`
+  these same endpoints with your key). Remote install (with the key exported in the shell,
+  never pasted into a chat — see references/tiers-and-limits.md "Key hygiene"):
+  `claude mcp add --transport http cryptodataapi https://cryptodataapi.com/mcp --header 'X-API-Key: ${CRYPTODATA_API_KEY}'`

@@ -72,16 +72,24 @@ If the user runs an MCP client (Claude, Cursor, Windsurf…), the hosted MCP ser
 these same endpoints as native tools (same key, same auth/tiers/rate-limits — it calls the
 REST API in-process). Prefer the `cryptodataapi` MCP tools when they are loaded.
 
-- **Remote (recommended, no Node):**
+- **Remote (recommended, no Node).** Export the key once in the shell profile, then use the
+  `${CRYPTODATA_API_KEY}` placeholder — single-quoted so it is stored literally; Claude Code
+  expands it from the environment at connect time. The command then contains no secret (safe
+  to paste anywhere, including a chat) and the plaintext never lands in `~/.claude.json`:
   ```bash
+  export CRYPTODATA_API_KEY="cdk_live_YOUR_KEY"   # terminal only
   claude mcp add --transport http cryptodataapi \
     https://cryptodataapi.com/mcp \
-    --header "X-API-Key: cdk_live_YOUR_KEY"
+    --header 'X-API-Key: ${CRYPTODATA_API_KEY}'
   ```
-- **Stdio (npm bridge):**
+- **Stdio (npm bridge)** — reads the same env var:
   ```bash
-  CRYPTODATA_API_KEY=cdk_live_YOUR_KEY claude mcp add cryptodataapi -- npx -y cryptodataapi-mcp
+  claude mcp add cryptodataapi -- npx -y cryptodataapi-mcp
   ```
+
+**Key hygiene:** never paste a command containing a literal `cdk_live_` key into an AI chat —
+it persists in that conversation's logs. If a key leaks, rotate it at
+https://cryptodataapi.com/dashboard.
 
 Tools include `get_daily_snapshot`, `get_market_health`, `get_market_regime`,
 `get_funding_rates`, `get_open_interest`, `get_liquidations`, `get_whale_activity`,
